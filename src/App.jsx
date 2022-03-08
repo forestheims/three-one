@@ -44,15 +44,15 @@ export default function App() {
 
   const pointLight = new THREE.PointLight(0xffffff);
   pointLight.position.set(5, 5, 5);
-  const lightHelper = new THREE.PointLightHelper(pointLight);
-  scene.add(lightHelper);
+  // const lightHelper = new THREE.PointLightHelper(pointLight);
+  // scene.add(lightHelper);
 
-  const ambientLight = new THREE.AmbientLight(0xffffff);
+  const ambientLight = new THREE.AmbientLight(0x9966bf);
 
   scene.add(pointLight, ambientLight);
 
-  const gridHelper = new THREE.GridHelper(200, 50);
-  scene.add(gridHelper);
+  // const gridHelper = new THREE.GridHelper(200, 50);
+  // scene.add(gridHelper);
 
   // listens to dom elements from the mouse, and updates the camera
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -70,6 +70,9 @@ export default function App() {
   }
 
   Array(333).fill().forEach(addStar);
+
+  // const backgroundTexture = new THREE.TextureLoader().load(pic);
+  // scene.background = backgroundTexture;
 
   function animate() {
     requestAnimationFrame(animate);
