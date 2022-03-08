@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 // Scene
 const scene = new THREE.Scene();
@@ -29,22 +30,40 @@ document.body.appendChild(renderer.domElement);
 const geometry = new THREE.IcosahedronGeometry();
 // material is the wrapping paper
 // custom shaders can be created using WebGL
-const material = new THREE.MeshBasicMaterial({
-  color: 0x9966d8,
-  wireframe: true,
+// BasicMaterial does not interact with lighting
+// StandardMaterial does interact with lighting
+const material = new THREE.MeshStandardMaterial({
+  color: 0x9966bf,
 });
 // Meshing creates the defined material wrapped geometry
 const icosahedron = new THREE.Mesh(geometry, material);
+// adding the shape to the scene;
 scene.add(icosahedron);
+camera.position.z = 20;
 
-camera.position.z = 5;
+const pointLight = new THREE.PointLight(0xffffff);
+pointLight.position.set(5, 5, 5);
+const lightHelper = new THREE.PointLightHelper(pointLight);
+scene.add(lightHelper);
+
+const ambientLight = new THREE.AmbientLight(0x444444);
+
+scene.add(pointLight, ambientLight);
+
+const gridHelper = new THREE.GridHelper(200, 50);
+scene.add(gridHelper);
+
+// listens to dom elements from the mouse, and updates the camera
+const controls = new OrbitControls(camera, renderer.domElement);
 
 export function animate() {
   requestAnimationFrame(animate);
 
   icosahedron.rotation.x += 0.001;
-  icosahedron.rotation.y += 0.001;
+  icosahedron.rotation.y += 0.005;
   icosahedron.rotation.z += 0.001;
+
+  controls.update();
 
   renderer.render(scene, camera);
 }
