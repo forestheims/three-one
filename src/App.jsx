@@ -28,7 +28,7 @@ export default function App() {
   const controls = new OrbitControls(camera, renderer.domElement);
 
   function addStar() {
-    const starGeometry = new THREE.SphereGeometry(0.33, 24, 24);
+    const starGeometry = new THREE.SphereGeometry(Math.random() / 2, 24, 24);
     const starMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
     const star = new THREE.Mesh(starGeometry, starMaterial);
     const [x, y, z] = Array(3)
@@ -38,11 +38,11 @@ export default function App() {
     scene.add(star);
   }
 
-  Array(123).fill().forEach(addStar);
+  Array(333).fill().forEach(addStar);
 
   const pointLight = new THREE.PointLight(0xffffff);
   pointLight.position.set(5, 5, 5);
-  const ambientLight = new THREE.AmbientLight(0x222222);
+  const ambientLight = new THREE.AmbientLight(0x9966bf);
   scene.add(pointLight, ambientLight);
 
   const pointer = new THREE.Vector2();
@@ -72,9 +72,22 @@ export default function App() {
   function resetMaterials() {
     for (let i = 0; i < scene.children.length; i++) {
       if (scene.children[i].material) {
-        scene.children[i].material.opacity = 1.0;
+        scene.children[i].material.opacity =
+          scene.children[i].userData === selectedPiece ? 0.5 : 1.0;
       }
     }
+  }
+
+  let selectedPiece = {};
+  function onClick(event) {
+    raycaster.setFromCamera(pointer, camera);
+    let intersects = raycaster.intersectObjects(scene.children);
+    if (intersects.length > 0) {
+      console.log(intersects[0].object);
+      selectedPiece = intersects[0].object.userData;
+    }
+
+    console.log(intersects);
   }
 
   function animate() {
@@ -92,6 +105,7 @@ export default function App() {
 
   window.addEventListener('resize', onWindowResize);
   window.addEventListener('mousemove', onPointerMove, false);
+  window.addEventListener('click', onClick);
 
   animate();
   console.log();
