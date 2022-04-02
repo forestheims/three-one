@@ -16,7 +16,7 @@ export default function App() {
   renderer.setPixelRatio(window.devicePixelRatio);
   document.body.appendChild(renderer.domElement);
 
-  const geometry = new THREE.TorusGeometry(20, 2, 3, 20);
+  const geometry = new THREE.TorusGeometry(10, 10, 10, 20);
   const material = new THREE.MeshNormalMaterial({
     color: 0x9966bf,
   });
