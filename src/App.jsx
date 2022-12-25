@@ -16,8 +16,8 @@ export default function App() {
   renderer.setPixelRatio(window.devicePixelRatio);
   document.body.appendChild(renderer.domElement);
 
-  const geometry = new THREE.IcosahedronGeometry();
-  const material = new THREE.MeshStandardMaterial({
+  const geometry = new THREE.TorusGeometry(10, 10, 10, 20);
+  const material = new THREE.MeshNormalMaterial({
     color: 0x9966bf,
   });
   const icosahedron = new THREE.Mesh(geometry, material);
@@ -93,9 +93,8 @@ export default function App() {
   function animate() {
     requestAnimationFrame(animate);
 
+    icosahedron.rotation.y = 1.5;
     icosahedron.rotation.x += 0.005;
-    icosahedron.rotation.y += 0.01;
-    icosahedron.rotation.z += 0.005;
 
     controls.update();
     resetMaterials();
